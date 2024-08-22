@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var isAnimating: Bool = false
     @State private var imageScale: CGFloat = 1
     @State private var imageOffset: CGSize = .zero
+    @State private var isDrawOpen: Bool = false
     
 //    MARK: - FUNCTION
     func resetImageState() {
@@ -147,13 +148,43 @@ struct ContentView: View {
                         .padding(.bottom, 30)
                     , alignment: .bottom
                 )
+//                MARK: - DRAWER
+                .overlay (
+                    HStack(spacing: 12) {
+//                        MARK: -DRAWER HANDLE
+                        Image(systemName:  isDrawOpen ? "chevron.compact.right" : "chevron.compact.left")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 40)
+                            .padding(8)
+                            .foregroundStyle(.secondary)
+                            .onTapGesture(perform:  {
+                                withAnimation(.easeOut) {
+                                    isDrawOpen.toggle()
+                                }
+                            })
+                        //MARK: - THUMBNAIL
+                        Spacer()
+                        
+                    } //: DRAWER
+                        .padding(EdgeInsets(top:16, leading: 8, bottom: 16, trailing: 8))
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(12)
+                        .opacity(isAnimating ? 1 : 0)
+                        .frame(width: 260)
+                        .padding(.top, UIScreen.main.bounds.height / 12)
+                        .offset(x: isDrawOpen ? 20: 215)
+                    , alignment: .topTrailing
+                )
+                    
+                    
                 
             } //: NAVIGATION
             .navigationViewStyle(.stack)
        
     }
 }
-
+//MARK: - PREVIEW
 #Preview {
     ContentView()
         .preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
