@@ -26,6 +26,10 @@ struct ContentView: View {
         }
     }
     
+    func currentPage() -> String {
+        return pages[pageIndex-1].imageName
+    }
+    
 //    MARK: - CONTENT
     
     var body: some View {
@@ -34,7 +38,7 @@ struct ContentView: View {
                 ZStack {
                     Color.clear
 //                    MARK: = PAGE IMAGE
-                    Image("magazine-front-cover")
+                    Image(currentPage())
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .cornerRadius(10)
@@ -167,6 +171,21 @@ struct ContentView: View {
                                 }
                             })
                         //MARK: - THUMBNAIL
+                        ForEach(pages) { item in
+                            Image(item.thumbNailName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 80)
+                                .cornerRadius(8)
+                                .shadow(radius: 4)
+                                .opacity(isDrawOpen ? 1 : 0)
+                                .animation(.easeOut(duration: 0.5), value: isDrawOpen)
+                                .onTapGesture (perform: {
+                                    isAnimating = true
+                                    pageIndex = item.id
+                                })
+                                
+                        }
                         Spacer()
                         
                     } //: DRAWER
